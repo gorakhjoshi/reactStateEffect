@@ -1,34 +1,38 @@
-import { useState, useEffect } from 'react';
-import List from './List';
-import { stories } from './stories';
+import { useState } from 'react';
+import { data } from './data';
 
-function App() {
-  const [state, setState] = useState(localStorage.getItem('myCat') || 'React');
-
-  useEffect(() => {
-    localStorage.setItem('myCat', state);
-  });
-
-  function handleChange(e) {
-    setState(e.target.value);
-  }
-
-  function handleClick() {
-    setState('hello');
-  }
-
+function List({ people }) {
+  console.log(people[0].id);
   return (
     <div>
-      <h1>Searching...</h1>
-      <label htmlFor='search'>Search: </label>
-      <input type='text' id='search' onChange={handleChange} value={state} />
-      <button onClick={handleClick}>Click Me</button>
-      <h2>Searching for: {state.a}</h2>
-      {state}
-      <hr />
-      <List stories={stories}>hello</List>
+      {people.map((people) => (
+        <SinglePerson key={people.id} people={people} />
+      ))}
     </div>
   );
 }
 
+function SinglePerson({ people }) {
+  return <h3>{people.name}</h3>;
+}
+
+const App = () => {
+  const [people, setpeople] = useState(data);
+
+  return (
+    <>
+      <section>
+        <h1 style={{ color: 'red' }}>Prop Drilling</h1>
+        <List people={people} />
+      </section>
+    </>
+  );
+};
+
 export default App;
+
+function add(a) {
+  console.log(a);
+}
+
+add(2);
