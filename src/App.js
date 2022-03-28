@@ -1,46 +1,35 @@
-import { useState } from 'react';
-import { data } from './data';
+// useReducer: simple Counter
 
-function List({ people, removePerson }) {
-  console.log(people);
+import React from 'react';
+
+function countReducer(state, action) {
+  console.log('I am from reducer function');
+  console.log(state);
+  console.log(action);
+
+  return { ...state, ...action };
+}
+
+function Counter({ initialCount = 0, step = 2 }) {
+  console.log('I am from Counter component');
+
+  const [{ count, newCount }, setState] = React.useReducer(countReducer, {
+    count: initialCount,
+    newCount: 500,
+  });
+
+  const increment = () => setState({ count: count + step });
+
   return (
-    <div>
-      {people.map((people) => (
-        <SinglePerson
-          key={people.id}
-          people={people}
-          removePerson={removePerson}
-        />
-      ))}
-    </div>
+    <button onClick={increment}>
+      {count} - {newCount}
+    </button>
   );
 }
 
-function SinglePerson({ people, removePerson }) {
-  console.log(typeof removePerson);
-  return (
-    <div>
-      <h3>{people.name}</h3>
-      <button onClick={() => removePerson(people.id)}>REMOVE</button>
-    </div>
-  );
+function App() {
+  console.log('I am from App component');
+  return <Counter />;
 }
-
-const App = () => {
-  const [people, setpeople] = useState(data);
-
-  function removePerson(id) {
-    setpeople((people) => people.filter((person) => person.id !== id));
-  }
-
-  return (
-    <>
-      <section>
-        <h1 style={{ color: 'red' }}>Prop Drilling</h1>
-        <List people={people} removePerson={removePerson} />
-      </section>
-    </>
-  );
-};
 
 export default App;
