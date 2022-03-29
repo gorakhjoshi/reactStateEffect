@@ -1,24 +1,29 @@
 // useReducer: simple Counter
 
-import React from 'react';
+import { useReducer } from 'react';
 
 function countReducer(state, action) {
   console.log('I am from reducer function');
-  console.log(state);
-  console.log(action);
 
-  return { ...state, ...action };
+  return {
+    ...state,
+    ...(typeof action === 'function' ? action(state) : action),
+  };
 }
 
 function Counter({ initialCount = 0, step = 2 }) {
   console.log('I am from Counter component');
 
-  const [{ count, newCount }, setState] = React.useReducer(countReducer, {
+  const [{ count, newCount }, setState] = useReducer(countReducer, {
     count: initialCount,
     newCount: 500,
   });
 
-  const increment = () => setState({ count: count + step });
+  const increment = () => {
+    setState((state) => {
+      return { count: state.count + step };
+    });
+  };
 
   return (
     <button onClick={increment}>
