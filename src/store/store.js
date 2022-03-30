@@ -1,6 +1,8 @@
 import { createStore } from 'redux';
 
-function counterReducer(state = { counter: 0 }, action) {}
+function counterReducer(state = { counter: 35 }, action) {
+  return state;
+}
 
 const store = createStore(counterReducer);
 
